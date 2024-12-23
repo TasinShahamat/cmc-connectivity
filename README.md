@@ -107,6 +107,7 @@ flowchart TD
 ### Update: Step 5.5 - Preparing Data for Statistical Analysis
 
 This step bridges the group connectivity analysis and the statistical testing phase by preparing the necessary data matrices.
+Based on Steve Peterson's code: https://github.com/stepeter/EEG_perturbations_analysis/blob/master/Connectivity/plotting_matlab/aveNetwork4Stats.m
 
 #### Overview
 
