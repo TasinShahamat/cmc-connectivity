@@ -1,4 +1,5 @@
 # README: Generating Chord Plots for Brain-EMG Connectivity
+Based on Steve Peterson's code written in R: https://github.com/stepeter/EEG_perturbations_analysis/blob/master/Connectivity/chord_diagrams/net_conn_stats_brainEMG.r
 
 This README provides step-by-step instructions on how the R script generates chord plots to visualize brain-EMG connectivity data. The process involves reading connectivity matrices, performing statistical tests, and creating plots with the `circlize` package.
 
