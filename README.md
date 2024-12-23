@@ -98,3 +98,32 @@ flowchart TD
 - Adjust `windowLengthSec` and `windowStepSizeSec` for different temporal resolutions.
 - Tests show most connections as `significant`, and `not following normal distribution`
 - Might need to adjust bootstrapping
+
+
+
+
+
+
+### Update: Step 5.5 - Preparing Data for Statistical Analysis
+
+This step bridges the group connectivity analysis and the statistical testing phase by preparing the necessary data matrices.
+
+#### Overview
+
+- **Goal**: Process connectivity matrices for statistical analysis and visualization.
+- **Key Tasks**:
+  1. Load and concatenate connectivity data from all subjects and trial types.
+  2. Perform baseline correction for connectivity values.
+  3. Apply average masking to filter relevant connectivity values.
+  4. Extract connectivity metrics for specific frequency bands (theta: 4–8 Hz, alpha: 8–13 Hz).
+  5. Save processed data for statistical testing.
+
+```mermaid
+flowchart TD
+    F1[Load Connectivity Matrices for All Subjects] --> F2[Concatenate Matrices Across Trials and Phases]
+    F2 --> F3[Identify Baseline Time Window]
+    F3 --> F4[Subtract Baseline from Connectivity Values]
+    F4 --> F5[Apply Average Masking to Filter Data]
+    F5 --> F6[Extract Frequency Bands Theta 4 to 8 Hz and Alpha 8 to 13 Hz]
+    F6 --> F7[Compute Mean Connectivity Values per Frequency Band]
+    F7 --> F8[Save Processed Data for Statistical Testing]
