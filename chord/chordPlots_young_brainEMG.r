@@ -10,7 +10,8 @@ n_components <- 11  # young - 11, old - 9
 # Loop through conditions and frequency bands
 for (cond in conds) {
   for (plotBand_cort  in freqBands) {
-    netData_sbjs = readMat(paste0(pathname, "netVals_young_", cond, "_early_epoch_PPT_aveTime_sbjs.mat"))
+    netData_sbjs = readMat(paste0(pathname, "unmaskedConnStruct_netVals_young_", cond, "_early_epoch_PPT_aveTime_sbjs.mat"))
+    print(paste0(pathname, "unmaskedConnStruct_netVals_young_", cond, "_early_epoch_PPT_aveTime_sbjs.mat"))
     
     head(netData_sbjs$netVals[1])
     # df = as.data.frame(netData_sbjs$netVals)
@@ -41,6 +42,14 @@ for (cond in conds) {
           counter=counter+1
           pvals_theta_box[j,i] = pvals_theta[counter]
           pvals_alpha_box[j,i] = pvals_alpha[counter]
+          if (is.na(pvals_theta_box[j,i])) {          # check for nan values. If found, set to 1
+            print(paste("Theta nan value at: ", j, i, " for ", cond, " condition"))
+            pvals_theta_box[j,i] = 1
+          }
+          if (is.na(pvals_alpha_box[j,i])) {
+            print(paste("Alpha nan value at: ", j, i, " for ", cond, " condition"))
+            pvals_alpha_box[j,i] = 1
+          }
         }
       }
     }
@@ -50,7 +59,7 @@ for (cond in conds) {
     #   pvals_theta_box[,i]=p.adjust(pvals_theta_box[,i],method='fdr')
     #   pvals_alpha_box[,i]=p.adjust(pvals_alpha_box[,i],method='fdr')
     # }
-    pvals_alpha_box[3,4] = 1  # temporary fix. there was a nan value due to all array values being 0 in that connection
+    # pvals_alpha_box[3,4] = 1  # temporary fix. there was a nan value due to all array values being 0 in that connection
     
     #Check for significance
     isSig_theta_box = matrix(0L, nrow = n_components, ncol = n_components)
@@ -71,7 +80,7 @@ for (cond in conds) {
     }
     
     #Load average data and mask it by significance
-    netData_ave = readMat(paste0(pathname, "netVals_young_", cond, "_early_epoch_PPT_aveTime.mat"))
+    netData_ave = readMat(paste0(pathname, "unmaskedConnStruct_netVals_young_", cond, "_early_epoch_PPT_aveTime.mat"))
     thetaAve = netData_ave$netVals.ave[[1]]
     alphaAve = netData_ave$netVals.ave[[2]]
     thetaAve[isSig_theta_box==0]=0
@@ -107,10 +116,12 @@ for (cond in conds) {
     }else{
       dat_in = cortAlpha
     }
-    png(paste(pathname,cond,"_",plotBand_cort,"_brainEMG_young.png",sep=""),bg="transparent",width = 4160, height = 4160)
+    png(paste(pathname,cond,"_",plotBand_cort,"_unmaskedConnStruct_brainEMG_young.png",sep=""),bg="transparent",width = 4160, height = 4160)
     # png(paste(pathname,cond,"_",plotBand_cort,"_brainEMG_young.svg",sep=""),bg="transparent",width = 4160, height = 4160)
-    color_vals = c('gold','cyan','green','purple','orange',
-                   'cyan','gold','purple','orange','green','pink')
+    # color_vals = c('gold','cyan','green','purple','orange',
+    #                'cyan','gold','purple','orange','green','pink')
+    color_vals = c('#858492','#228B22','#DAA520','#CCCCFF','#808000',
+                  '#DDA0DD','#40E0D0','#9932CC','#B76E79','#FF7F50','#FFDAB9')
     color_vals_links = adjustcolor(color_vals, alpha.f = 0.6)
     factors = c("ACC","SMA_r","SMA_l","PPC_r","PPC_l","LTA","LSO","LRF","LST","LAD","LPD")
     circos.par(cell.padding = c(0, 0, 0, 0),
@@ -120,7 +131,7 @@ for (cond in conds) {
                 gap.degree=c(0,0,0,0,20,0,0,0,0,0,20)) 
     sign_vals = sign(dat_in)
     A = abs(dat_in)*10^4
-    circos.initialize(factors, xlim = cbind(c(0,0,0,0,0,0,0,0,0,0,0), 2*c(1,1,1,1,1,1,1,1,1,1,1))) 
+    circos.initialize(factors, xlim = cbind(c(0,0,0,0,0,0,0,0,0,0,0), 8*c(1,1,1,1,1,1,1,1,1,1,1))) 
     
     
     circos.trackPlotRegion(ylim = c(0, 1), track.height = 0.05,
@@ -149,7 +160,7 @@ for (cond in conds) {
                              #plot axis
                             #  circos.axis(labels.cex=2.8, direction = "outside", major.at=c(0,1,2.1),#seq(from=0,to=floor(2),by=1), 
                             #              minor.ticks=1, labels.away.percentage = 0.15, lwd=2,labels.niceFacing=FALSE)
-                             circos.axis(labels.cex=6, direction = "outside", major.at=c(0,1,2.1),#seq(from=0,to=floor(2),by=1), 
+                             circos.axis(labels.cex=6, direction = "outside", major.at=c(0,2,4,6),#seq(from=0,to=floor(2),by=1), 
                                          minor.ticks=1, lwd=2,labels.niceFacing=FALSE)
                            }) 
     
