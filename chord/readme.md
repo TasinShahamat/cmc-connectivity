@@ -1,4 +1,4 @@
-# Hypotheses and Key Observations
+<!--- # Hypotheses and Key Observations
 
 ## Hypotheses
 1. **Corticomuscular connectivity will increase between theta ACC and a subset of muscles.**
@@ -34,3 +34,4 @@
     - Mid-extension perturbations elicited stronger connectivity in older adults, particularly from the motor cortex to the left posterior deltoid (LPD) and lower-limb muscles.
     - Young adults displayed more targeted connectivity during extension-onset perturbations, with strong motor-to-LPD connections.
 
+--->
